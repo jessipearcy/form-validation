@@ -1,5 +1,5 @@
 <div class="form-container">
-  <form [formGroup]="contact" (ngSubmit)="onSubmit()">
+  <form [formGroup]="signup" (ngSubmit)="onSubmit()">
     <div class="input-group">
       <input
         type="text"
@@ -7,6 +7,9 @@
         placeholder="First Name"
         formControlName="firstName"
       />
+      <span class="alert" *ngIf="firstName.invalid && firstName.touched"
+        >Please enter your first name</span
+      >
     </div>
     
     <div class="input-group">
@@ -16,6 +19,7 @@
         placeholder="Last Name"
         formControlName="lastName"
       />
+      <span class="alert" *ngIf="lastName.invalid && lastName.touched">Please enter your last name</span>
     </div>
 
     <div class="input-group">
@@ -25,6 +29,9 @@
         placeholder="Email"
         formControlName="email"
       />
+      <span class="alert" *ngIf="email.invalid && email.touched && !email.errors['existingCustomer'] && !email.value">Please enter an email address</span>
+      <span class="alert" *ngIf="email.invalid && email.touched && email.errors['email']">Email address is invalid</span>
+      <span class="alert" *ngIf="email.invalid && email.touched && email.errors['existingCustomer']">You've already signed up!</span>
     </div>
 
     <div class="input-group">
@@ -34,6 +41,9 @@
         placeholder="Quantity"
         formControlName="quantity"
       />
+      <span class="alert" *ngIf="quantity.invalid && quantity.touched && !quantity.value">Please enter a quantity</span>      
+      <span class="alert" *ngIf="quantity.invalid && quantity.touched && quantity.errors['min']">You must add at least 2</span>
+      <span class="alert" *ngIf="quantity.invalid && quantity.touched && quantity.errors['max']">You may add no more than 20</span>
     </div>
 
     <div class="input-group">
@@ -42,8 +52,10 @@
         placeholder="Message"
         formControlName="message"
       ></textarea>
+      <span class="alert" *ngIf="message.invalid && message.touched && !message.value">Please enter a helpful message</span>
+      <span class="alert" *ngIf="message.invalid && message.touched && message.errors['minlength']">Message is less than 10 characters</span>
     </div>
 
-    <button [disabled]="contact.invalid" type="submit">Submit</button>
+    <button [disabled]="signup.invalid" type="submit">Submit</button>
   </form>
 </div>
